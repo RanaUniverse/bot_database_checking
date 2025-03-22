@@ -1,29 +1,39 @@
+import asyncio
 import logging
 import os
 import random
-import asyncio
+
 
 from dotenv import load_dotenv
 
+
 from telegram import Update
-from telegram import InlineKeyboardMarkup, InlineKeyboardButton
+
+from telegram import (
+    InlineKeyboardMarkup,
+    InlineKeyboardButton,  # type: ignore
+)
 from telegram import LinkPreviewOptions
+
+
+from telegram.constants import ParseMode
+
 
 from telegram.ext import (
     Application,
     ContextTypes,
-    MessageHandler,
-    CommandHandler,
-    CallbackQueryHandler,
     filters,
 )
 
-from telegram.constants import ParseMode
-
-from my_modules.some_url_link import ImageLinks, MessageEffectEmojies
+from telegram.ext import (
+    MessageHandler,
+    CommandHandler,
+    CallbackQueryHandler,
+)
 
 
 from my_modules.some_inline_keyboards import keyboard_options, keyboard_options_aplhabet
+from my_modules.some_url_link import ImageLinks, MessageEffectEmojies
 
 
 logging.basicConfig(
