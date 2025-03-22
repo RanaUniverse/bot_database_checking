@@ -23,6 +23,9 @@ from telegram.constants import ParseMode
 from my_modules.some_url_link import ImageLinks, MessageEffectEmojies
 
 
+from my_modules.some_inline_keyboards import keyboard_options, keyboard_options_aplhabet
+
+
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     level=logging.INFO,
@@ -69,11 +72,12 @@ async def start_cmd_old(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
     )
 
     await asyncio.sleep(3)
+
     await context.bot.edit_message_text(
+        text="New TExt after edit",
         chat_id=user.id,
-        text="This is new message content.",
         message_id=msg_send.message_id,
-        parse_mode=ParseMode.HTML,
+        reply_markup=InlineKeyboardMarkup(keyboard_options_aplhabet),
     )
 
 
@@ -90,17 +94,7 @@ async def start_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         show_above_text=True,
         prefer_small_media=True,
     )
-    keyboard = [
-        [
-            InlineKeyboardButton(text="Option 1", callback_data="1"),
-            InlineKeyboardButton(text="Option 2", callback_data="2"),
-        ],
-        [
-            InlineKeyboardButton(text="Option 3", callback_data="3"),
-            InlineKeyboardButton(text="Option 4", callback_data="4"),
-            InlineKeyboardButton(text="Option 5", callback_data="5"),
-        ],
-    ]
+
     user = update.message.from_user
 
     text = f"Hello {user.full_name} This is a checking button message."
@@ -111,7 +105,15 @@ async def start_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         parse_mode=ParseMode.HTML,
         link_preview_options=link_previes_options,
         message_effect_id=random.choice(GOOD_EFFECTS),
-        reply_markup=InlineKeyboardMarkup(keyboard),
+        reply_markup=InlineKeyboardMarkup(keyboard_options),
+    )
+    await context.bot.send_message(
+        chat_id=user.id,
+        text=text,
+        parse_mode=ParseMode.HTML,
+        link_preview_options=link_previes_options,
+        message_effect_id=random.choice(GOOD_EFFECTS),
+        reply_markup=InlineKeyboardMarkup(keyboard_options_aplhabet),
     )
 
 
@@ -167,10 +169,13 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
     await asyncio.sleep(3)
 
-    await context.bot.deleteMessage(
-        chat_id=user.id,
-        message_id=query.message.message_id,  # type: ignore
-    )
+    try:
+        await context.bot.deleteMessage(
+            chat_id=user.id,
+            message_id=query.message.message_id,  # type: ignore
+        )
+    except Exception as e:
+        print(f"Message deletion failed: {e}")
 
 
 def main() -> None:
