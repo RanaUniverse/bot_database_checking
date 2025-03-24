@@ -188,6 +188,16 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         print(f"Message deletion failed: {e}")
 
 
+async def new_note_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """When user will want to make anew note."""
+
+    if update.message is None or update.message.from_user is None:
+        print("This should Not happens 🧐🧐🧐")
+        return
+
+    print("This has not implimented yet.")
+
+
 def main() -> None:
     """STarting the bot"""
 
@@ -210,10 +220,19 @@ def main() -> None:
             block=False,
         )
     )
+
     application.add_handler(
         CommandHandler(
             command=["start", "st"],
             callback=start_cmd,
+            block=False,
+        )
+    )
+
+    application.add_handler(
+        CommandHandler(
+            command=["new_note"],
+            callback=new_note_cmd,
             block=False,
         )
     )
